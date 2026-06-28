@@ -1,0 +1,16 @@
+bin/
+obj/
+*.user
+.vs/
+
+# publish output
+server/publish/
+
+# xray large binaries
+xray-backup/xray
+xray-backup/geoip.dat
+xray-backup/geosite.dat
+
+# secrets
+xray-backup/config.json
+server/TelegramRelay/appsettings.json
