@@ -8,7 +8,7 @@
     installs the relay behind nginx on port 80.
     Requires the Posh-SSH module (auto-installed from PSGallery if missing).
 .PARAMETER SkipBuild
-    Skip the dotnet publish step (reuse existing server\publish\ artifacts).
+    Skip the dotnet publish step (reuse existing relay\publish\ artifacts).
 .EXAMPLE
     .\deploy.ps1
     .\deploy.ps1 -SkipBuild
@@ -34,8 +34,8 @@ $WsPort        = 25345         # cTrader cloud only allows WebSocket on this por
 # ──────────────────────────────────────────────────────────────────────────────
 
 $ScriptDir  = Split-Path -Parent $MyInvocation.MyCommand.Path
-$ProjectDir = Join-Path $ScriptDir "server\TelegramRelay"
-$PublishDir = Join-Path $ScriptDir "server\publish"
+$ProjectDir = Join-Path $ScriptDir "relay\TelegramRelay"
+$PublishDir = Join-Path $ScriptDir "relay\publish"
 
 # ── Output helpers ─────────────────────────────────────────────────────────────
 function Write-Step  ($msg) { Write-Host "  > $msg" -ForegroundColor Cyan   }
@@ -113,7 +113,7 @@ function Publish-App {
         --nologo -v minimal
 
     if ($LASTEXITCODE -ne 0) { Write-Fatal "dotnet publish failed" }
-    Write-Ok "Published to server\publish\"
+    Write-Ok "Published to relay\publish\"
 }
 
 # ── 3. Server requirements ─────────────────────────────────────────────────────
@@ -153,7 +153,7 @@ function Assert-ServerRequirements {
 function Deploy-Files {
     Write-Step "Uploading app files..."
 
-    $tarPath = Join-Path $ScriptDir "server\publish.tar.gz"
+    $tarPath = Join-Path $ScriptDir "relay\publish.tar.gz"
     $publishLeaf = [IO.Path]::GetFileName($PublishDir)
     & tar -czf $tarPath -C ([IO.Path]::GetDirectoryName($PublishDir)) $publishLeaf
     if ($LASTEXITCODE -ne 0) { Write-Fatal "Failed to create archive" }

@@ -4,7 +4,7 @@ obj/
 .vs/
 
 # publish output
-server/publish/
+relay/publish/
 
 # secrets
-server/TelegramRelay/appsettings.json
+relay/TelegramRelay/appsettings.json
